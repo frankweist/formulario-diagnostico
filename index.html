@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario Diagnóstico Placa Electrónica</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f8f8f8; }
+    h1 { color: #003366; }
+    label { font-weight: bold; display: block; margin-top: 15px; }
+    input[type=text], input[type=file], textarea, select {
+      width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box;
+    }
+    .checkbox-group { margin-bottom: 10px; }
+    .submit-button {
+      background-color: #007ACC; color: white; padding: 10px 20px;
+      border: none; cursor: pointer; font-size: 16px; margin-top: 20px;
+    }
+    .submit-button:hover { background-color: #005f99; }
+  </style>
+</head>
+<body>
+
+<h1>Diagnóstico de Placa Electrónica</h1>
+
+<form id="diagnosticoForm">
+  <label>Nombre, modelo o código de la placa:</label>
+  <input type="text" name="modelo">
+
+  <label>Dispositivo al que pertenece:</label>
+  <input type="text" name="dispositivo">
+
+  <label>Voltajes esperados (entrada/salida):</label>
+  <input type="text" name="voltajes">
+
+  <label>¿Fotos adjuntas?</label>
+  <select name="fotos">
+    <option>Sí</option>
+    <option>No</option>
+  </select>
+
+  <label>Subir imágenes de la placa (puedes adjuntar varias):</label>
+  <input type="file" name="imagenes" multiple accept="image/*">
+
+  <label>Zona o componente sospechoso:</label>
+  <input type="text" name="zona">
+
+  <label>Síntomas observados:</label>
+  <textarea name="sintomas"></textarea>
+
+  <label>¿Cuándo y cómo ocurre el fallo?</label>
+  <textarea name="cuandocomo"></textarea>
+
+  <label>¿Componentes visiblemente dañados?</label>
+  <textarea name="componentes_danados"></textarea>
+
+  <label>¿Zonas calientes o con olor?</label>
+  <textarea name="calor_olor"></textarea>
+
+  <label>Mediciones realizadas:</label>
+  <textarea name="mediciones"></textarea>
+
+  <label>Componentes reemplazados:</label>
+  <textarea name="reemplazos"></textarea>
+
+  <label>Herramientas usadas:</label>
+  <textarea name="herramientas"></textarea>
+
+  <label>¿Qué esperas que haga? Marca lo necesario:</label>
+  <div class="checkbox-group">
+    <label><input type="checkbox" name="accion" value="identificar"> Identificar componentes</label>
+    <label><input type="checkbox" name="accion" value="esquemas"> Rastrear esquemas o datasheets</label>
+    <label><input type="checkbox" name="accion" value="analizar"> Analizar zona sospechosa</label>
+    <label><input type="checkbox" name="accion" value="pruebas"> Sugerir pruebas con multímetro/osciloscopio</label>
+    <label><input type="checkbox" name="accion" value="reemplazos"> Recomendar reemplazos</label>
+    <label><input type="checkbox" name="accion" value="trazado"> Trazar rutas de voltaje en la placa</label>
+  </div>
+
+  <label>Nivel de experiencia:</label>
+  <input type="text" value="Medio / Avanzado" readonly>
+
+  <label>Instrumental disponible:</label>
+  <textarea readonly>- Multímetro digital y analógico
+- Fuente ajustable
+- Lámpara serie
+- Estación de soldadura (aire caliente y cautín)
+- Microscopio o lupa
+- Osciloscopio
+- Cámara térmica
+- Herramientas manuales y limpieza</textarea>
+
+  <button class="submit-button" type="button" onclick="guardarFormulario()">Guardar diagnóstico</button>
+</form>
+
+<script>
+function guardarFormulario() {
+  const form = document.getElementById('diagnosticoForm');
+  const formData = new FormData(form);
+  let contenido = '';
+  for (const [clave, valor] of formData.entries()) {
+    contenido += `${clave}: ${valor}\n`;
+  }
+  const blob = new Blob([contenido], { type: 'text/plain' });
+  const enlace = document.createElement('a');
+  enlace.href = URL.createObjectURL(blob);
+  enlace.download = 'diagnostico_placa.txt';
+  enlace.click();
+}
+</script>
+
+</body>
+</html>
